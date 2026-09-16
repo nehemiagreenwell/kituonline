@@ -1,0 +1,14 @@
+INSERT INTO order_item(order_number,item_number,
+				catalog_number,quantity,price)
+
+
+
+
+"UPDATE customer_order SET submitted='yes'
+						WHERE order_numbe
+
+
+NSERT INTO order_item(order_number,catalog_number,quantity,item_number,price)
+
+
+SELECT name,type FROM food WHERE catalog_number=
