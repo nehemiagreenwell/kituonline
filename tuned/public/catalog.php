@@ -15,6 +15,7 @@ try {
     $database = new Database($config);
     $catalog = new Catalog($database->getConnection());
     $items = $catalog->getAllOfType($type);
+    $isLoggedIn = isset($_SESSION['user_id']); // comes from logsys
 } catch (Throwable $exception) {
     http_response_code(500);
     exit('Unable to load products.');
@@ -34,6 +35,10 @@ try {
     <p>
         <a href="index.php">Back to catalog</a>
     </p>
+    <p style="display:inline;">Welcome, <?= $_SESSION['user_name'] ?></p>
+    <a href="../../../php-sandbox/logsys/logout.php">
+            <p><small>Logout</small></p>
+            </a>
 
     <h1>
         <?= htmlspecialchars($type, ENT_QUOTES, 'UTF-8') ?>
@@ -53,7 +58,8 @@ try {
                 Price:
                 $<?= htmlspecialchars((string) $item->price, ENT_QUOTES, 'UTF-8') ?>
             </p>
-
+            <?php if($isLoggedIn): ?>
+            <!-- LOGGED IN USER -->
             <form method="post" action="shoppingcart.php">
                 <input
                     type="hidden"
@@ -80,6 +86,13 @@ try {
                     Add to Cart
                 </button>
             </form>
+            
+        <?php else: ?>
+            <!-- PUBLIC USER -->
+            <a href="../../../php-sandbox/logsys/login.php?redirect=catalog.php?id=$item->catalog_number">
+            <p><small>Login required to add to cart</small></p>
+            </a>
+        <?php endif; ?>
         </article>
 
         <hr>
